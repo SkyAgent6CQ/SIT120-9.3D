@@ -1,0 +1,1522 @@
+:root {
+  --green-deep: #015E4B;
+  --green-leaf: #6CA145;
+  --terracotta: #B8451F;
+  --ink: #1C2B26;
+  --paper: #FFFFFF;
+  --paper-tint: #F1F5EE;
+  --rule: #D8E2D3;
+  /* I have changed some colors to keep the contrast */
+  --leaf-soft: #B4D79A;
+
+  --font-head: "Poppins", "Trebuchet MS", sans-serif;
+  --font-body: "Inter", "Segoe UI", Arial, sans-serif;
+
+  --gutter: 5vw;
+  --measure: 34rem;
+
+  /* One spacing scale, used for section padding and grid gaps, so the
+     rhythm of the whole site changes in one place per breakpoint. */
+  --space-section: 2.25rem;
+  --space-gap: 1.25rem;
+}
+
+/* Reset and base */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background-color: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  /* Everything is sized in rem from here, so the whole page scales with the
+     reader's own browser text size instead of ignoring it. */
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-head);
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--green-deep);
+  margin: 0 0 0.5rem;
+}
+
+h1 { font-size: 1.75rem; }
+h2 { font-size: 1.4rem; }
+h3 { font-size: 1.05rem; }
+
+/* Capping the paragraph width rather than the container keeps lines near 65
+   characters on a wide screen without forcing the sections to be narrow. */
+p {
+  margin: 0 0 1rem;
+  max-width: var(--measure);
+}
+
+a {
+  color: var(--green-deep);
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.15em;
+}
+
+a:hover {
+  color: var(--terracotta);
+}
+
+a:focus-visible,
+.button:focus-visible,
+.table-scroll:focus-visible {
+  outline: 0.2rem solid var(--terracotta);
+  outline-offset: 0.15rem;
+}
+
+.skip {
+  position: absolute;
+  left: -100vw;
+}
+
+.skip:focus {
+  position: static;
+  display: block;
+  padding: 0.75rem var(--gutter);
+  background-color: var(--green-deep);
+  color: var(--paper);
+}
+
+/* Shared width container. Percentage side padding on small screens,
+   capped by a max-width once there is room for it. */
+.wrap {
+  width: 100%;
+  max-width: 62rem;
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+/* Header and navigation
+   The nav is always visible rather than hidden behind a toggle, because
+   there are only three links and a first-time visitor should be able to see
+   that the directions page exists without opening anything.
+   Adding the third link is what forced the change here as three items no
+   longer fit as equal thirds on a 320px screen, so the links now size to
+   their own text, wrap if they must, and keep a 2.75rem tap target. */
+
+.site-header {
+  background-color: var(--green-deep);
+  padding: 1rem 0;
+}
+
+.header-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* Logo and wordmark
+   The logo file has a white background of its own, so on the deep green
+   header it is shown as a printed tile rather than a cut-out. Its alt text is
+   empty because the wordmark beside it already says the name, and screen
+   reader announcing it twice would only delay the person. */
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+}
+
+.brand-mark {
+  width: 2.75rem;
+  height: 2.75rem;
+  flex: none;
+}
+
+.wordmark {
+  font-family: var(--font-head);
+  font-weight: 600;
+  font-size: 1.35rem;
+  line-height: 1.1;
+  color: var(--paper);
+}
+
+.wordmark-small {
+  display: block;
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  color: var(--leaf-soft);
+}
+
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.nav li {
+  flex: 0 1 auto;
+}
+
+.nav a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.75rem;
+  padding: 0.4rem 0.7rem;
+  color: var(--paper);
+  font-size: 0.95rem;
+  font-weight: 500;
+  text-align: center;
+  text-decoration: none;
+  border-bottom: 0.2rem solid transparent;
+}
+
+.nav a:hover {
+  color: var(--paper);
+  border-bottom-color: var(--green-leaf);
+}
+
+/* The current page is marked with the same green underline in both the header
+   and the footer, so the two navs do the same thing. */
+.nav a[aria-current="page"] {
+  border-bottom-color: var(--green-leaf);
+}
+
+/* Images and figures
+   All three images are line drawings rather than photographs. A photo of the
+   queue would identify the students in it, and the two drawings that matter
+   are explaining a route and a running order, which a diagram does better.
+
+   max-width and height:auto together stop an image overflowing its column or
+   distorting. The width and height attributes in the HTML give the browser
+   the aspect ratio up front so the text below does not jump as it loads. */
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+.figure {
+  margin: 1.5rem 0 0;
+}
+
+.figure img {
+  display: block;
+  width: 100%;
+  border: 0.0625rem solid var(--rule);
+}
+
+/* The one photograph is much wider than it is tall, so it runs the full width
+   of the text column instead of sitting in a side column where the crates
+   would be too small to make out. Also, using srcset lets a phone download the 
+   800px copy rather than the 1600px one. */
+.figure-wide {
+  margin-top: 1.25rem;
+}
+
+.figure figcaption {
+  margin-top: 0.6rem;
+  font-size: 0.9rem;
+  color: var(--green-deep);
+}
+
+/* Section rhythm */
+
+main section {
+  padding: var(--space-section) 0;
+  border-bottom: 0.0625rem solid var(--rule);
+}
+
+main section:last-child {
+  border-bottom: 0;
+}
+
+.lead {
+  font-size: 1.1rem;
+  color: var(--green-deep);
+}
+
+/* Text beside a picture
+
+   Three sections use the same shape: a block of text and one figure. They
+   share these rules so the pages stay consistent, and they stack in source
+   order on a phone so the explanation always arrives before its drawing. */
+
+.bring-inner,
+.entrance-inner,
+.shift-inner {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-gap);
+  align-items: start;
+}
+
+/* Next session (home page hero) */
+
+.session {
+  background-color: var(--paper-tint);
+  border-bottom: 0.25rem solid var(--green-leaf);
+}
+
+.session-inner {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+/* The h1 is the quiet label and the date is the loud thing, because the date
+   is what someone opening this page actually came for. */
+.session h1 {
+  font-size: 1rem;
+  font-family: var(--font-body);
+  font-weight: 500;
+  color: var(--ink);
+  margin-bottom: 0.25rem;
+}
+
+.date {
+  font-family: var(--font-head);
+  font-weight: 600;
+  /* Scales with the viewport so the date stays the largest thing on any
+     screen, with the clamp stopping it from filling a phone or a monitor. */
+  font-size: clamp(2.1rem, 9vw, 3.75rem);
+  line-height: 1.05;
+  color: var(--terracotta);
+  margin: 0 0 0.25rem;
+}
+
+.time {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--green-deep);
+  margin-bottom: 0;
+}
+
+.countdown {
+  display: inline-block;
+  padding: 0.3rem 0.7rem;
+  background-color: var(--green-deep);
+  color: var(--paper);
+  font-weight: 500;
+  font-size: 0.9rem;
+  margin-bottom: 0.85rem;
+}
+
+.place {
+  font-size: 1.05rem;
+  margin-bottom: 1.25rem;
+}
+
+.session-action {
+  margin-bottom: 0;
+}
+
+/* Full width on a phone so the button is easy to hit with a thumb. It shrinks
+   to its text at 48rem, where a full width button would look like an error. */
+.button {
+  display: block;
+  width: 100%;
+  padding: 0.85rem 1.25rem;
+  background-color: var(--terracotta);
+  color: var(--paper);
+  font-weight: 500;
+  text-align: center;
+  text-decoration: none;
+}
+
+.button:hover {
+  background-color: var(--green-deep);
+  color: var(--paper);
+}
+
+/* Bring a carry bag */
+
+.bring {
+  background-color: var(--green-deep);
+  color: var(--paper);
+  border-bottom: 0;
+}
+
+.bring h2 {
+  color: var(--paper);
+  font-size: clamp(1.5rem, 6vw, 2.25rem);
+}
+
+.bring p {
+  color: var(--paper);
+}
+
+.bring-text p:last-child {
+  margin-bottom: 0;
+}
+
+.bring .figure figcaption {
+  color: var(--paper-tint);
+}
+
+/* Reused on the volunteer page for the one thing a reader should take away
+   from that section. */
+.bring-note {
+  padding-left: 1rem;
+  border-left: 0.25rem solid var(--green-leaf);
+  color: var(--leaf-soft);
+  font-weight: 500;
+}
+
+.shift-text .bring-note {
+  color: var(--terracotta);
+  border-left-color: var(--terracotta);
+}
+
+.shift-text p:last-child {
+  margin-bottom: 0;
+}
+
+/* Stacking tables (session dates, volunteer roles)
+
+   Both of these tables have five columns, which cannot be read across a phone
+   screen. On small screens every row becomes a card and each cell carries its
+   own heading, taken from the data-label attribute, so the table reads top to
+   bottom with no sideways scrolling. From 48rem the same markup is restored
+   to a real table. The two tables share this class so a change to the pattern
+   only has to be made once. */
+
+.table-stack {
+  width: 100%;
+  margin-top: 1.25rem;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.table-stack caption {
+  display: block;
+  max-width: var(--measure);
+  margin-bottom: 1rem;
+  color: var(--green-deep);
+  font-weight: 500;
+  text-align: left;
+}
+
+/* Stacked view: turn the table parts into blocks. */
+.table-stack,
+.table-stack thead,
+.table-stack tbody,
+.table-stack tr,
+.table-stack th,
+.table-stack td {
+  display: block;
+}
+
+/* The column headings are repeated inside each cell below, so the real header
+   row is hidden from sight while staying in the accessibility tree for a
+   screen reader. */
+.table-stack thead {
+  position: absolute;
+  width: 0.0625rem;
+  height: 0.0625rem;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.table-stack tbody tr {
+  margin-bottom: var(--space-gap);
+  padding: 0.75rem 1rem;
+  background-color: var(--paper-tint);
+  border-left: 0.25rem solid var(--green-leaf);
+}
+
+.table-stack tbody tr:last-child {
+  margin-bottom: 0;
+}
+
+.table-stack tbody th {
+  font-family: var(--font-head);
+  font-size: 1.05rem;
+  color: var(--green-deep);
+  padding-bottom: 0.5rem;
+  border-bottom: 0.0625rem solid var(--rule);
+}
+
+/* Label and value sit in two columns inside the cell so the values line up
+   down the card and can be scanned without reading every label. */
+.table-stack tbody td {
+  display: grid;
+  grid-template-columns: 7.5rem 1fr;
+  gap: 0.75rem;
+  padding: 0.4rem 0;
+  border-bottom: 0.0625rem solid var(--rule);
+}
+
+.table-stack tbody td:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.table-stack tbody td::before {
+  content: attr(data-label);
+  font-weight: 500;
+  color: var(--green-deep);
+}
+
+/* The first cell is the card heading, so it does not repeat its label. */
+.table-stack tbody th::before {
+  content: none;
+}
+
+/* Stock table (what to expect)
+
+   This one keeps its shape at every width and scrolls sideways inside a
+   focusable container instead, because its four columns only make sense read
+   across. */
+
+.table-hint {
+  font-size: 0.9rem;
+  color: var(--green-deep);
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.table-scroll {
+  overflow-x: auto;
+  margin-bottom: 1.5rem;
+  border: 0.0625rem solid var(--rule);
+}
+
+.stock-table {
+  width: 100%;
+  min-width: 34rem;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.95rem;
+}
+
+.stock-table caption {
+  padding: 0.75rem 1rem;
+  background-color: var(--paper-tint);
+  border-bottom: 0.0625rem solid var(--rule);
+  color: var(--green-deep);
+  font-weight: 500;
+  text-align: left;
+}
+
+.stock-table thead th {
+  padding: 0.7rem 1rem;
+  background-color: var(--green-deep);
+  color: var(--paper);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.stock-table tbody th,
+.stock-table tbody td {
+  padding: 0.7rem 1rem;
+  border-bottom: 0.0625rem solid var(--rule);
+  vertical-align: top;
+}
+
+.stock-table tbody th {
+  font-weight: 600;
+  color: var(--green-deep);
+}
+
+.stock-table tbody tr:nth-child(even) {
+  background-color: var(--paper-tint);
+}
+
+.stock-table tbody tr:last-child th,
+.stock-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+/* Plain text sections */
+
+.eligibility p:last-child,
+.glance p:last-child,
+.queue p:last-child,
+.who p:last-child,
+.available p:last-child,
+.signup p:last-child,
+.roles p:last-child {
+  margin-bottom: 0;
+}
+
+/* Card list */
+
+.card-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-gap);
+  margin: 1.5rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  padding: 1.25rem;
+  background-color: var(--paper-tint);
+  border-left: 0.25rem solid var(--green-leaf);
+}
+
+/* Card text is already in a narrow column, so the sitewide measure would
+   only make it narrower still. */
+.card p {
+  max-width: none;
+}
+
+.card p:last-child {
+  margin-bottom: 0;
+}
+
+/* Pushes the link to the bottom so the three links line up across
+   the row once the cards sit side by side. */
+.card-link {
+  margin-top: auto;
+  padding-top: 0.5rem;
+}
+
+/* Interior pages */
+
+.page-intro {
+  background-color: var(--paper-tint);
+  border-bottom: 0.25rem solid var(--green-leaf);
+}
+
+.page-intro h1 {
+  font-size: clamp(1.9rem, 7vw, 2.75rem);
+}
+
+.page-intro p:last-child {
+  margin-bottom: 0;
+}
+
+/* Numbered because these genuinely happen in order. */
+.step-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-gap);
+  margin: 1.25rem 0 0;
+  padding: 0 0 0 1.75rem;
+}
+
+.step-list li::marker {
+  color: var(--terracotta);
+  font-family: var(--font-head);
+  font-weight: 600;
+}
+
+.step-list p {
+  margin-bottom: 0;
+}
+
+/* Footer */
+
+.site-footer {
+  background-color: var(--green-deep);
+  color: var(--paper);
+  padding: 2rem 0;
+}
+
+.footer-inner {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  align-items: start;
+}
+
+.footer-lead {
+  font-size: 1.05rem;
+  color: var(--paper);
+}
+
+.site-footer a {
+  color: var(--paper);
+}
+
+.site-footer a:hover {
+  color: var(--green-leaf);
+}
+
+/* Repeating the three links at the end of the page saves a scroll back to
+   the top on a phone, where the pages are long. */
+.nav-footer {
+  margin-top: 0.5rem;
+  margin-left: -0.7rem;
+}
+
+.disclaimer {
+  margin-bottom: 0;
+  padding-top: 1rem;
+  border-top: 0.0625rem solid var(--green-leaf);
+  font-size: 0.875rem;
+  color: var(--paper-tint);
+}
+
+/* Volunteer sign-up form (signup.html)
+
+   The form reuses most of the things such as, fonts and the terracotta button 
+   already defined above rather than introducing anything of its own, so the 
+   fourth page reads as part of the same site. Everything here is the phone layout 
+   such as one column, labels above inputs, full width controls. The columns 
+   arrive at 48rem with the rest of the site. */
+
+.form-times {
+  padding: 0.75rem 1rem;
+  background-color: var(--paper-tint);
+  border-left: 0.25rem solid var(--green-leaf);
+  font-weight: 500;
+  color: var(--green-deep);
+  max-width: none;
+}
+
+.signup-form {
+  margin-top: 1.5rem;
+}
+
+/* Fieldsets carry the three decisions from the 6.2C wireframe. The default
+   fieldset border is replaced by the same left rule the cards and tables use,
+   so the blocks look like the rest of the site. */
+
+/* The fieldset is stripped bare and the panel is drawn on the
+   .field-body wrapper inside it. A legend is laid out on the fieldset's top
+   border edge rather than as a normal child, so anything drawn on the fieldset
+   (background, left rule, padding) collides with it and lands differently from
+   one browser to the next. Moving the panel one element in leaves the legend
+   as an ordinary heading sitting above it. */
+
+.field-set {
+  margin: 0 0 var(--space-gap);
+  padding: 0;
+  background-color: transparent;
+  border: 0;
+}
+
+.field-body {
+  padding: 1.25rem;
+  background-color: var(--paper-tint);
+  border-left: 0.25rem solid var(--green-leaf);
+}
+
+/* Now a plain heading above its panel, matching the h3 size used elsewhere. */
+.field-set legend {
+  padding: 0 0 0.5rem;
+  font-family: var(--font-head);
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: var(--green-deep);
+}
+
+.field-intro {
+  margin-top: 0;
+  font-size: 0.95rem;
+  max-width: var(--measure);
+}
+
+/* Grid, one column on a phone. Each .field is label, control and hint stacked,
+   which is the only arrangement that survives a 320px screen. */
+.field-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-gap);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+}
+
+.field label {
+  font-weight: 500;
+  color: var(--green-deep);
+  margin-bottom: 0.35rem;
+}
+
+.optional {
+  font-weight: 400;
+  color: var(--ink);
+}
+
+/* Controls are sized in rem and stretch to 100%, so they follow the reader's
+   text size and the column width instead of a fixed pixel width. The 2.75rem
+   minimum keeps every control a comfortable thumb target. */
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  min-height: 2.75rem;
+  padding: 0.6rem 0.75rem;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: var(--ink);
+  background-color: var(--paper);
+  border: 0.0625rem solid var(--rule);
+}
+
+.field textarea {
+  min-height: 5rem;
+  resize: vertical;
+}
+
+.field input:focus-visible,
+.field select:focus-visible,
+.field textarea:focus-visible,
+.choice input:focus-visible {
+  outline: 0.2rem solid var(--terracotta);
+  outline-offset: 0.15rem;
+}
+
+/* Validation states, 8.4D
+
+   These used to be :user-invalid, which only matches a control the browser is
+   validating. The form now carries novalidate and has no constraint attributes
+   left, so that selector can never match and the states are driven by two
+   classes that signup.js toggles instead. The behaviour is deliberately the
+   same as before: nothing is marked until the person has left the field or
+   pressed submit, so a fresh page is not covered in red. */
+.field input.is-invalid,
+.field select.is-invalid,
+.field textarea.is-invalid {
+  border-color: var(--terracotta);
+  border-width: 0.125rem;
+}
+
+.field input.is-valid,
+.field select.is-valid,
+.field textarea.is-valid {
+  border-color: var(--green-leaf);
+  border-width: 0.125rem;
+}
+
+/* The radio and checkbox groups are marked on the list rather than on each
+   control, because the rule is about the group: one session, at least one
+   role. Padding is added with the border so the rows do not shift sideways
+   when the state changes. */
+.choice-list.is-invalid,
+.choice-list.is-valid {
+  padding-left: 0.75rem;
+  border-left: 0.25rem solid var(--rule);
+}
+
+.choice-list.is-invalid {
+  border-left-color: var(--terracotta);
+}
+
+.choice-list.is-valid {
+  border-left-color: var(--green-leaf);
+}
+
+.hint {
+  margin-top: 0.35rem;
+  font-size: 0.875rem;
+  color: var(--green-deep);
+}
+
+/* Radio and checkbox lists
+
+   Both groups use the same rows: control on the left, label and its note in a
+   column beside it. The session list was chosen over a table precisely because
+   a stack of rows needs no reflow on a phone. */
+.choice-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.5rem;
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.choice {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.75rem;
+  align-items: start;
+  padding: 0.7rem 0.85rem;
+  background-color: var(--paper);
+  border: 0.0625rem solid var(--rule);
+}
+
+.choice input {
+  width: 1.15rem;
+  height: 1.15rem;
+  margin: 0.2rem 0 0;
+  accent-color: var(--green-deep);
+}
+
+/* The whole row is the label, so the tap target is the row rather than a
+   1.15rem circle. */
+.choice label {
+  font-weight: 500;
+  color: var(--green-deep);
+  cursor: pointer;
+}
+
+.choice-note {
+  display: block;
+  margin-top: 0.15rem;
+  font-weight: 400;
+  font-size: 0.9rem;
+  color: var(--ink);
+}
+
+/* Buttons: full width and stacked on a phone, same as .button everywhere else
+   on the site. Reset is drawn as the quiet one and sits above the submit, so
+   the thumb resting at the bottom of the screen lands on "Sign me up". */
+.form-actions {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.button-quiet {
+  background-color: transparent;
+  color: var(--green-deep);
+  border: 0.125rem solid var(--green-deep);
+}
+
+.button-quiet:hover {
+  background-color: var(--green-deep);
+  color: var(--paper);
+}
+
+/* button elements do not inherit the font or sizing that .button gives a link,
+   so they are matched back to it here. */
+button.button {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  border: 0.125rem solid var(--terracotta);
+  cursor: pointer;
+}
+
+button.button-quiet {
+  border-color: var(--green-deep);
+}
+
+/* The optional message box follows a choice list rather than the field grid,
+   so it needs the gap the grid would otherwise have given it. */
+.field-body .field-wide {
+  margin-top: var(--space-gap);
+}
+
+.form-footnote {
+  margin-top: 1.25rem;
+  font-size: 0.9rem;
+  color: var(--green-deep);
+}
+
+/* Inline validation messages, 8.4D
+
+   One span under every field, empty until a rule has something to say. It is
+   block level and sits in the normal flow rather than floating over anything,
+   so a message appearing pushes the page down instead of covering the next
+   field, which is what matters on a narrow screen. The font size matches .hint
+   so a field with both does not read as two different kinds of text. */
+.feedback {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+/* An empty span still takes a line box, which makes every field jump by that
+   much the first time a message appears. Collapsing the empty state keeps the
+   grid still until there is genuinely something to show. */
+.feedback:empty {
+  display: none;
+}
+
+/* Terracotta rather than a pure red: it is the site's existing warm accent,
+   it clears 4.5:1 on both the white controls and the tinted panel, and it is
+   distinguishable from the green for a red-green colour blind reader because
+   the two differ in lightness as well as hue. */
+.feedback-error {
+  color: var(--terracotta);
+}
+
+/* Deep green rather than the lighter leaf green, which does not have the
+   contrast for text this size on the panel tint. */
+.feedback-ok {
+  color: var(--green-deep);
+}
+
+/* The message is never the only signal. A tick or a cross is added here so
+   the state survives a greyscale printout or a colour blind reader. */
+.feedback-error::before {
+  content: "\2715\00a0";
+}
+
+.feedback-ok::before {
+  content: "\2713\00a0";
+}
+
+/* Live character counter (Enhancement A)
+
+   Right aligned under the textarea, out of the reading path until it is
+   needed. Tabular figures stop the number jittering sideways as it counts. */
+.counter {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  color: var(--green-deep);
+}
+
+.counter-warn {
+  color: var(--terracotta);
+}
+
+/* Over the limit is a real error, so it is weighted to match the message that
+   appears with it. */
+.counter-over {
+  color: var(--terracotta);
+  font-weight: 600;
+}
+
+/* Submission summary (Enhancement D)
+
+   Same tinted panel and left rule as a fieldset body, because it takes the
+   form's place on the page and should not read as a different component. */
+.form-summary {
+  margin-top: 1.5rem;
+  padding: 1.25rem;
+  background-color: var(--paper-tint);
+  border-left: 0.25rem solid var(--green-leaf);
+}
+
+/* The panel is focused when it appears so a screen reader lands on it, and
+   the outline that focus would draw is not useful on a whole panel. */
+.form-summary:focus {
+  outline: none;
+}
+
+.form-summary h3 {
+  margin-top: 0;
+  font-family: var(--font-head);
+  color: var(--green-deep);
+}
+
+.summary-lead {
+  font-size: 0.95rem;
+}
+
+/* One column on a phone: label on its own line above its value, which is the
+   only arrangement that survives a long email address at 320px. */
+.summary-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.25rem 1rem;
+  margin: 1.25rem 0 0;
+}
+
+.summary-list dt {
+  font-weight: 600;
+  color: var(--green-deep);
+}
+
+/* Long answers wrap rather than pushing the panel wider than the screen.
+   overflow-wrap catches the one case that is not a normal word: an email
+   address with no spaces in it. */
+.summary-list dd {
+  margin: 0 0 0.75rem;
+  overflow-wrap: break-word;
+}
+
+.summary-list dd:last-child {
+  margin-bottom: 0;
+}
+
+.summary-actions {
+  margin-top: 1.5rem;
+  margin-bottom: 0;
+}
+
+.signup-section .session-action {
+  margin-top: 1.5rem;
+  margin-bottom: 0;
+}
+
+/* Breakpoint 1 for tablet and up (48rem / 768px)
+
+   This is chosen because this is the width at which a five column table stops being
+   cramped, which is the real constraint on these pages. The header becomes
+   one row, the text-and-picture sections and the footer split into two
+   columns, the cards move into two columns, and both stacking tables return
+   to being tables. */
+
+@media (min-width: 48rem) {
+
+  :root {
+    /* A percentage gutter keeps growing past the point where it is useful,
+       so it becomes a fixed measurement here. */
+    --gutter: 2.5rem;
+    --space-section: 3.25rem;
+    --space-gap: 1.5rem;
+  }
+
+  h1 { font-size: 2.25rem; }
+  h2 { font-size: 1.75rem; }
+
+  .header-inner {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+
+  .brand-mark {
+    width: 3.25rem;
+    height: 3.25rem;
+  }
+
+  .nav {
+    gap: 0.5rem 1.5rem;
+  }
+
+  .nav a {
+    min-height: 0;
+    padding: 0.4rem 0;
+    font-size: 1rem;
+  }
+
+  .nav-footer {
+    margin-left: 0;
+  }
+
+  .session-inner {
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  .session-where {
+    padding-left: 3rem;
+    border-left: 0.0625rem solid var(--rule);
+  }
+
+  .button {
+    display: inline-block;
+    width: auto;
+  }
+
+  /* The text column is the wider one in all three as the drawings support the
+     writing rather than carrying the section. */
+  .bring-inner,
+  .entrance-inner,
+  .shift-inner {
+    grid-template-columns: 1.3fr 1fr;
+    gap: 3rem;
+  }
+
+  .card-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .step-list {
+    max-width: 46rem;
+  }
+
+  .footer-inner {
+    grid-template-columns: 1.2fr 1fr;
+    gap: 2.5rem;
+  }
+
+  .disclaimer {
+    padding-top: 0;
+    padding-left: 2.5rem;
+    border-top: 0;
+    border-left: 0.0625rem solid var(--green-leaf);
+  }
+
+  /* Restore the real tables now that five columns fit in. */
+  .table-stack { display: table; }
+  .table-stack thead { display: table-header-group; }
+  .table-stack tbody { display: table-row-group; }
+  .table-stack tr { display: table-row; }
+  .table-stack th,
+  .table-stack td { display: table-cell; }
+
+  .table-stack caption {
+    display: table-caption;
+    max-width: none;
+    padding: 0 1rem;
+  }
+
+  /* Cells are padded by 1rem, so the table is pulled 1rem wider on each
+     side and its text then lines up with the paragraphs around it. */
+  .table-stack {
+    margin-left: -1rem;
+    width: calc(100% + 2rem);
+  }
+
+  .table-stack thead {
+    position: static;
+    width: auto;
+    height: auto;
+    overflow: visible;
+    clip-path: none;
+  }
+
+  .table-stack thead th {
+    padding: 0.7rem 1rem;
+    background-color: var(--green-deep);
+    color: var(--paper);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 500;
+  }
+
+  .table-stack tbody tr {
+    margin-bottom: 0;
+    padding: 0;
+    background-color: transparent;
+    border-left: 0;
+  }
+
+  /* This banding replaces the card outline as the thing that keeps the eye on
+     one row across five columns. */
+  .table-stack tbody tr:nth-child(even) {
+    background-color: var(--paper-tint);
+  }
+
+  /* These selectors have to be as specific as the stacked rules they undo,
+     or the cells stay stacked. */
+  .table-stack tbody th,
+  .table-stack tbody td,
+  .table-stack tbody td:last-child {
+    display: table-cell;
+    padding: 0.7rem 1rem;
+    border-bottom: 0.0625rem solid var(--rule);
+    vertical-align: top;
+  }
+
+  .table-stack tbody th {
+    font-size: 1rem;
+  }
+
+  .schedule-table tbody th {
+    white-space: nowrap;
+  }
+
+  .table-stack tbody tr:last-child th,
+  .table-stack tbody tr:last-child td {
+    border-bottom: 0;
+  }
+
+  .table-stack tbody td::before {
+    content: none;
+  }
+
+  /* Form at 48rem and up
+
+     The single column stacks to two, which is the one responsive change on this
+     page a marker can see at a glance. Name, email, mobile and residence are
+     short fields, so two per row halves the scrolling without crowding them.
+     The role checkboxes pair up as well, since each is one line plus a note. */
+
+  .field-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-gap) 1.5rem;
+  }
+
+  /* The message box keeps the full width, because it is the one field where a
+     line break matters. */
+  .field-wide {
+    grid-column: 1 / -1;
+  }
+
+  .choice-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .field-body {
+    padding: 1.5rem;
+  }
+
+  /* Buttons return to their own width and sit on one row, with the submit on
+     the right where a mouse expects it. */
+  .form-actions {
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: 1rem;
+  }
+
+  .form-actions .button {
+    width: auto;
+  }
+
+  /* Summary at 48rem and up: the labels move beside their values, so the
+     panel is read across rather than scrolled down. The first column is sized
+     to the longest label rather than a guess at one. */
+  .summary-list {
+    grid-template-columns: max-content 1fr;
+    gap: 0.5rem 1.5rem;
+  }
+
+  .summary-list dd {
+    margin-bottom: 0;
+  }
+
+  .form-summary {
+    padding: 1.5rem;
+  }
+
+  /* The four column stock table fits from here, so the sideways
+     scrolling and its instruction are no longer needed. */
+  .table-hint {
+    display: none;
+  }
+
+  .table-scroll {
+    overflow-x: visible;
+    margin-left: -1rem;
+    margin-right: -1rem;
+  }
+}
+
+/* Breakpoint 2 for desktop (64rem / 1024px)
+
+   Second layout change: the three cards move from two columns into a single
+   row, the numbered steps sit side by side, and the gutters and section
+   padding open up so a full width window does not read as one dense block. */
+
+@media (min-width: 64rem) {
+
+  :root {
+    --gutter: 3.5rem;
+    --space-section: 4rem;
+    --space-gap: 2rem;
+  }
+
+  body {
+    font-size: 1.0625rem;
+  }
+
+  .session-where {
+    padding-left: 4rem;
+  }
+
+  .card-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  /* Once the steps sit side by side, each number has to live inside its
+     own column, so the marker moves inside the list item. */
+  .step-list {
+    grid-template-columns: repeat(3, 1fr);
+    max-width: none;
+    gap: 2rem;
+    padding-left: 0;
+    list-style-position: inside;
+  }
+
+  .step-list li::marker {
+    font-size: 1.05rem;
+  }
+
+  /* Except the directions, which are already in a column beside the route
+     drawing. Three columns inside a half width column would be unreadable. */
+  .step-list-stacked {
+    grid-template-columns: 1fr;
+    gap: var(--space-gap);
+    padding-left: 1.75rem;
+    list-style-position: outside;
+  }
+
+  .stock-table {
+    font-size: 1rem;
+  }
+
+  /* Form at 64rem and up
+
+     The form stops widening here. A text input that runs the full width of a
+     monitor is harder to fill than one that does not, and the session list is
+     easier to compare down a single column than across two. */
+
+  .signup-form,
+  .form-summary {
+    max-width: 52rem;
+  }
+
+  .choice-list {
+    gap: 0.6rem;
+  }
+}
+
+/* Motion preference: the only movement on the site is a colour fade on
+   hover, and it is skipped for anyone who has asked for reduced motion. */
+
+@media (prefers-reduced-motion: no-preference) {
+  a,
+  .button {
+    transition: color 0.15s ease, background-color 0.15s ease;
+  }
+}
+/* Task 9.3D additions: the Vue version
+
+   Everything above is from the 8.4D stylesheet, unchanged, because the Vue
+   components reuse its class names. The rules below cover only what the Vue
+   build added: the number field, the form's 2-second success message, the
+   parent's acknowledgement card and the copyright line. They follow the same
+   mobile-first pattern, base rules for a phone and a media query to widen. */
+
+/* Pages are swapped by Vue rather than loaded, so a section reached from a
+   link elsewhere is scrolled to by script. This leaves a little air above it. */
+main section[id] {
+  scroll-margin-top: 1rem;
+}
+
+/* The number field takes at most a two digit answer, so a full width box
+   would suggest something much longer. Full width on a phone, capped after. */
+.field-narrow {
+  margin-bottom: var(--space-gap);
+}
+
+.field-narrow input {
+  max-width: 10rem;
+}
+
+/* A heading for the radio group, styled to match the field labels. It is a
+   paragraph rather than a second legend because a fieldset can only have one. */
+.field-label {
+  margin: 0 0 0.35rem;
+  font-weight: 500;
+  color: var(--green-deep);
+}
+
+/* The child form's own confirmation, shown for the 2 seconds before reset. */
+.form-success {
+  max-width: none;
+  margin: 1.25rem 0 0;
+  padding: 0.75rem 1rem;
+  background-color: var(--paper-tint);
+  border-left: 0.25rem solid var(--green-deep);
+  color: var(--green-deep);
+  font-weight: 500;
+}
+
+.form-success::before {
+  content: "\2713\00a0";
+}
+
+/* Both buttons are disabled during the countdown so a double click cannot
+   send the same sign-up twice. */
+button.button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+button.button:disabled:hover {
+  background-color: var(--terracotta);
+  color: var(--paper);
+}
+
+button.button-quiet:disabled:hover {
+  background-color: transparent;
+  color: var(--green-deep);
+}
+
+/* Customer acknowledgement card (App.vue)
+
+   This belongs to the parent, not the form, so it is drawn differently from
+   the form's tinted panels: a white card with a heavy deep green rule along
+   the top. It reads as the result of the form rather than another part of
+   it, and it stays put when the form clears. */
+.ack-card {
+  margin-top: 1.5rem;
+  padding: 1.25rem;
+  background-color: var(--paper);
+  border: 0.0625rem solid var(--rule);
+  border-top: 0.375rem solid var(--green-deep);
+}
+
+.ack-card h3 {
+  font-size: 1.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.ack-lead {
+  font-size: 1.05rem;
+}
+
+/* One fact per line on a phone. A long email address has no spaces to break
+   at, so overflow-wrap stops it pushing the card wider than the screen. */
+.ack-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.4rem;
+  margin: 0 0 1rem;
+  padding: 0;
+  list-style: none;
+}
+
+.ack-list li {
+  padding: 0.4rem 0;
+  border-bottom: 0.0625rem solid var(--rule);
+  overflow-wrap: anywhere;
+}
+
+.ack-list strong {
+  color: var(--green-deep);
+}
+
+.ack-meta {
+  margin-bottom: 0;
+  font-size: 0.9rem;
+  color: var(--green-deep);
+}
+
+.copyright {
+  margin: 0.75rem 0 0;
+  font-size: 0.875rem;
+  color: var(--paper-tint);
+}
+
+@media (min-width: 48rem) {
+
+  .ack-card {
+    padding: 1.5rem 1.75rem;
+  }
+
+  /* The short facts pair up into two columns once there is room. */
+  .ack-list {
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 2rem;
+  }
+
+  .copyright {
+    padding-left: 2.5rem;
+  }
+}
+
+@media (min-width: 64rem) {
+
+  /* Same cap as the form above it, so the two line up on a wide screen. */
+  .ack-card {
+    max-width: 52rem;
+  }
+}
+
+/* The 8.4D script toggled an .is-invalid class on each control. In Vue the
+   control already carries aria-invalid="true" when its rule fails, so the
+   red border hangs off that attribute instead: one source of truth for both
+   the screen reader and the styling. */
+.field input[aria-invalid="true"],
+.field select[aria-invalid="true"],
+.field textarea[aria-invalid="true"] {
+  border-color: var(--terracotta);
+  border-width: 0.125rem;
+}
